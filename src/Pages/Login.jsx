@@ -1,63 +1,65 @@
+import LoginPage, { Logo, Password, Username } from "@react-login-page/page5";
 import React, { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import img from "../images/Travel.jpg";
-import "./Styles/Login.css";
+import LoginLogo from "react-login-page/logo-rect";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
-const LoginPage = () => {
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [formData, setFormData] = useState({ username: "", password: "" });
+const styles = {
+  height: "100vh", // Full height of the viewport
+  display: "flex", // Center the form
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "#f5f5f5", // Optional background color
+};
 
-  const handlePasswordToggle = () => setPasswordVisible(!passwordVisible);
+const Demo = () => {
+  const navigate = useNavigate(); // Initialize navigate function
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Username:", username);
+    console.log("Password:", password);
+  };
+
+  const handleSignUpClick = () => {
+    navigate("/signup"); // Navigate to the signup page
   };
 
   return (
-    <div className="login-container">
-      {/* Left container with image */}
-      <div className="left-container">
-        <img src={img} alt="Login Illustration" className="left-image" />
-      </div>
-
-      {/* Right container with the form */}
-      <div className="right-container">
-        <div className="login-form-container">
-          <h2 className="login-title">Login</h2>
-          <div className="input-field">
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              className="input-box"
-              placeholder="Username"
-            />
-          </div>
-          <div className="input-field">
-            <input
-              type={passwordVisible ? "text" : "password"}
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="input-box"
-              placeholder="Password"
-            />
-            <button className="toggle-btn" onClick={handlePasswordToggle}>
-              {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-            </button>
-          </div>
-          <button className="submit-btn">Login</button>
-
-          {/* Sign Up Link Button */}
-          <a href="/signup" className="signup-link">
-            Do not have an account? Please Sign Up
-          </a>
-        </div>
-      </div>
+    <div style={styles}>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          width: "100%",
+          height: "100vh",
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+          borderRadius: "8px",
+        }}
+      >
+        <LoginPage>
+          <h3>Keep your memories with you</h3>
+          <p style={{ cursor: "pointer" }}>
+            Not a member? <a onClick={handleSignUpClick}>Sign up now</a>
+          </p>
+          <Username
+            name="userUserName"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Password
+            placeholder="Password"
+            name="userPassword"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Logo>
+            <LoginLogo />
+          </Logo>
+        </LoginPage>
+      </form>
     </div>
   );
 };
 
-export default LoginPage;
+export default Demo;

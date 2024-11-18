@@ -5,11 +5,31 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  background-color: #cef9f0;
+  background-color: #f45a68;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.signup-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #f45a68;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signup-button:hover {
+  background-color: #fb7e89;
+}
+
+.faded-bold-label {
+  font-weight: bold;
+  font-size: small;
+  color: rgba(0, 0, 0, 0.6); /* Adjust the opacity for faded effect */
 }
