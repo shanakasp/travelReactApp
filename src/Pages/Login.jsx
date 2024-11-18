@@ -88,6 +88,7 @@ const Demo = () => {
           </p>
           <Username
             name="userUserName"
+            placeholder="Email Address"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />

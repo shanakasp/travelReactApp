@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom"; // Import useNavigate for routing
+import Swal from "sweetalert2"; // Import SweetAlert2
 import "../Styles/Dashboard.css";
 
 const Navbar = () => {
@@ -7,6 +9,7 @@ const Navbar = () => {
   const [loading, setLoading] = useState(true);
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
+  const navigate = useNavigate(); // For navigation
 
   // Fetch username from the API when the component mounts
   useEffect(() => {
@@ -20,24 +23,46 @@ const Navbar = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data && data.name) {
-            setUserName(data.name);
+          if (data && data.email) {
+            setUserName(data.email);
           } else {
             setUserName("Unknown User");
           }
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
-          setUserName("Error fetching name"); // Handle errors gracefully
+          setUserName("Error fetching name");
         })
         .finally(() => {
-          setLoading(false); // Set loading to false after the API call completes
+          setLoading(false);
         });
     } else {
       setUserName("No User");
       setLoading(false);
     }
-  }, [userId, token]); // Re-run the effect when userId or token changes
+  }, [userId, token]);
+
+  // Handle logout
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, logout",
+      cancelButtonText: "No, cancel",
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Clear userId and token from localStorage
+        localStorage.removeItem("userId");
+        localStorage.removeItem("token");
+
+        // Redirect to the home page
+        navigate("/");
+      }
+    });
+  };
 
   return (
     <div>
@@ -51,7 +76,7 @@ const Navbar = () => {
           ) : (
             <span className="user-name">{userName}</span> // Show fetched username
           )}
-          <button className="logout-btn">
+          <button className="logout-btn" onClick={handleLogout}>
             <FaSignOutAlt />
           </button>
         </div>
