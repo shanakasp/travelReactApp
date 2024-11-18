@@ -1,5 +1,13 @@
-import { TextField } from "@mui/material"; // Import Material UI TextField for styling
+import {
+  CircularProgress,
+  Alert as MuiAlert,
+  Snackbar,
+  TextField,
+} from "@mui/material";
+import AlertTitle from "@mui/material/AlertTitle";
+import axios from "axios"; // For making the HTTP request
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Styles/Addnewcard.css";
 import Navbar from "./components/Navbar";
 
@@ -8,8 +16,14 @@ const AddNewCard = () => {
     title: "",
     description: "",
     image: null,
-    date: "", // Changed to an empty string for date format
+    date: "",
   });
+
+  const [loading, setLoading] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("success");
+  const navigate = useNavigate();
 
   // Handle input changes
   const handleChange = (e) => {
@@ -30,10 +44,50 @@ const AddNewCard = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted", formData);
-    // You can add your form submission logic here (e.g., sending the data to the server)
+    setLoading(true);
+
+    // Get the user token from localStorage
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+
+    // Create form data for image and other fields
+    const data = new FormData();
+    data.append("title", formData.title);
+    data.append("description", formData.description);
+    data.append("image", formData.image);
+    data.append("date", formData.date);
+
+    try {
+      // Send the POST request to the backend API
+      const response = await axios.post(
+        "http://localhost:3001/api/cards",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Attach the token for authentication
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // On successful response
+      setAlertMessage("Card added successfully!");
+      setAlertSeverity("success");
+      setOpenSnackbar(true);
+
+      setTimeout(() => {
+        navigate("/dashboard"); // Navigate to dashboard after 2 seconds
+      }, 2000);
+    } catch (error) {
+      // Handle error response
+      setAlertMessage("Failed to add card. Please try again.");
+      setAlertSeverity("error");
+      setOpenSnackbar(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -82,19 +136,40 @@ const AddNewCard = () => {
             <TextField
               fullWidth
               variant="filled"
-              type="date" // Using type="date" for the date input
+              type="date"
               value={formData.date}
               name="date"
-              onChange={handleChange} // Handle change for the date
+              onChange={handleChange}
               required
             />
           </div>
 
           <button type="submit" className="submit-btn">
-            Add Card
+            {loading ? <CircularProgress size={24} /> : "Add Card"}
           </button>
         </form>
       </div>
+
+      {/* Snackbar for success/error messages */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <MuiAlert
+          onClose={() => setOpenSnackbar(false)}
+          severity={alertSeverity}
+          elevation={6}
+          variant="filled"
+          sx={{ color: "#fff" }}
+        >
+          <AlertTitle>
+            {alertSeverity === "success" ? "Success" : "Error"}
+          </AlertTitle>
+          {alertMessage}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };
