@@ -1,0 +1,136 @@
+/* General styles */
+.dashboard {
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: linear-gradient(
+    45deg,
+    #000000,
+    #7b192c
+  ); /* Gradient background */
+  color: white;
+  box-shadow: 0 14px 12px rgba(88, 88, 88, 0.3); /* Adds a shadow */
+}
+
+.navbar-left .logo {
+  font-size: 24px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.user-name {
+  margin-right: 10px;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+.logout-btn:hover {
+  color: #f39c12;
+}
+
+/* Add new card button */
+.add-card-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border: none;
+  cursor: pointer;
+  justify-content: end;
+  align-items: flex-end;
+  justify-self: end;
+  border-radius: 5px;
+}
+
+.add-card-btn:hover {
+  background-color: #dadada;
+}
+
+/* Cards container */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centers the cards horizontally */
+  align-items: center; /* Centers the cards vertically */
+  gap: 20px;
+  padding: 20px;
+
+  box-sizing: border-box;
+}
+
+/* Individual card styles */
+.card {
+  width: 200px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 14px 22px rgba(0, 0, 0, 0.2); /* Adds a shadow effect to each card */
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Adds transition effects for hover */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Slightly lifts the card on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Increases the shadow on hover */
+}
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.card-details {
+  margin-top: 10px;
+}
+
+.card-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.card-date {
+  font-size: 14px;
+  color: #777;
+}
+
+/* Card actions (edit and delete buttons) */
+.card-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 18px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  color: #4caf50;
+}
+
+.delete-btn:hover {
+  color: #f44336;
+}
