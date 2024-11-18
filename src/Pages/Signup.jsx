@@ -1,4 +1,7 @@
+import { Alert as MuiAlert, Snackbar } from "@mui/material";
+import AlertTitle from "@mui/material/AlertTitle";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importing useNavigate for navigation
 
 const styles = {
   height: "100vh", // Full height of the viewport
@@ -16,6 +19,10 @@ const Signup = () => {
     phoneNumber: "",
   });
   const [error, setError] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("success"); // Default to success
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -25,7 +32,7 @@ const Signup = () => {
     setError(""); // Clear error when user starts typing
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { password, confirmPassword } = formData;
 
@@ -34,8 +41,47 @@ const Signup = () => {
       return;
     }
 
-    console.log("Form Submitted:", formData);
-    alert("Signup successful!");
+    try {
+      const response = await fetch("http://localhost:3001/api/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.username,
+          email: formData.username, // You can change this if needed
+          password: formData.password,
+          location: formData.location,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Successful signup
+        setAlertSeverity("success");
+        setAlertMessage(data.message);
+        setOpenSnackbar(true);
+
+        // Store userId and token in localStorage
+        localStorage.setItem("userId", data.userId);
+        localStorage.setItem("token", data.token);
+
+        // Redirect to /dashboard after 3 seconds
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 3000);
+      } else {
+        // Error during signup
+        setAlertSeverity("error");
+        setAlertMessage(data.message || "Something went wrong.");
+        setOpenSnackbar(true);
+      }
+    } catch (err) {
+      setAlertSeverity("error");
+      setAlertMessage("Network error. Please try again later.");
+      setOpenSnackbar(true);
+    }
   };
 
   return (
@@ -131,6 +177,27 @@ const Signup = () => {
           Sign Up
         </button>
       </form>
+
+      {/* Snackbar for Success/Error Alerts */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <MuiAlert
+          onClose={() => setOpenSnackbar(false)}
+          severity={alertSeverity}
+          elevation={6}
+          variant="filled"
+          sx={{ color: "#fff" }}
+        >
+          <AlertTitle>
+            {alertSeverity === "success" ? "Success" : "Error"}
+          </AlertTitle>
+          {alertMessage}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };
