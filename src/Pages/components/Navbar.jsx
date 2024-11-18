@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for routing
-import Swal from "sweetalert2"; // Import SweetAlert2
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import "../Styles/Dashboard.css";
 
 const Navbar = () => {
@@ -9,9 +9,8 @@ const Navbar = () => {
   const [loading, setLoading] = useState(true);
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
-  const navigate = useNavigate(); // For navigation
+  const navigate = useNavigate();
 
-  // Fetch username from the API when the component mounts
   useEffect(() => {
     if (userId && token) {
       fetch(`http://localhost:3001/api/users/${userId}`, {
@@ -42,7 +41,6 @@ const Navbar = () => {
     }
   }, [userId, token]);
 
-  // Handle logout
   const handleLogout = () => {
     Swal.fire({
       title: "Are you sure?",

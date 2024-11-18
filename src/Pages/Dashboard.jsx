@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2"; // Import SweetAlert2 for confirmation on delete
 import "./Styles/Dashboard.css";
@@ -9,6 +9,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCard, setSelectedCard] = useState(null); // For showing full preview
 
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
@@ -82,6 +83,17 @@ const Dashboard = () => {
     });
   };
 
+  const truncateText = (text, length) =>
+    text.length > length ? text.slice(0, length) + "..." : text;
+
+  const handleViewCard = (card) => {
+    setSelectedCard(card); // Set the selected card to show the full preview
+  };
+
+  const handleClosePreview = () => {
+    setSelectedCard(null); // Close the preview
+  };
+
   return (
     <div className="dashboard">
       {/* Navbar */}
@@ -98,28 +110,43 @@ const Dashboard = () => {
           <p>Loading cards...</p>
         ) : cards.length > 0 ? (
           cards.map((card) => (
-            <div className="card" key={card._id}>
+            <div
+              className="card"
+              key={card._id}
+              onClick={() => handleViewCard(card)} // Set selected card on click
+            >
               <img
                 src={`http://localhost:3001/${card.image}`} // Display image preview
                 alt={card.title}
                 className="card-image"
               />
               <div className="card-details">
-                <h3 className="card-name">{card.title}</h3>
-                <p className="card-description">{card.description}</p>
+                <h3 className="card-name">
+                  {truncateText(card.title, 10)} {/* Truncate title */}
+                </h3>
+                <p className="card-description">
+                  {truncateText(card.description, 10)}{" "}
+                  {/* Truncate description */}
+                </p>
                 <p className="card-date">
                   {new Date(card.date).toLocaleDateString()} {/* Format date */}
                 </p>
               </div>
               <div className="card-actions">
                 <button
-                  onClick={() => handleEditCard(card._id)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering parent onClick
+                    handleEditCard(card._id);
+                  }}
                   className="edit-btn"
                 >
                   <FaEdit />
                 </button>
                 <button
-                  onClick={() => handleDeleteCard(card._id)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering parent onClick
+                    handleDeleteCard(card._id);
+                  }}
                   className="delete-btn"
                 >
                   <FaTrash />
@@ -131,6 +158,28 @@ const Dashboard = () => {
           <p>No cards available.</p>
         )}
       </div>
+
+      {/* Full Preview Modal */}
+      {selectedCard && (
+        <div className="card-preview-overlay">
+          <div className="card-preview">
+            <button className="close-btn" onClick={handleClosePreview}>
+              <FaTimes style={{}} />
+            </button>
+
+            <img
+              src={`http://localhost:3001/${selectedCard.image}`}
+              alt={selectedCard.title}
+              className="preview-image"
+            />
+            <h2 className="preview-title">{selectedCard.title}</h2>
+            <p className="preview-description">{selectedCard.description}</p>
+            <p className="preview-date">
+              {new Date(selectedCard.date).toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -5,7 +5,7 @@ import {
   TextField,
 } from "@mui/material";
 import AlertTitle from "@mui/material/AlertTitle";
-import axios from "axios"; // For making the HTTP request
+import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Styles/Addnewcard.css";
@@ -19,6 +19,7 @@ const AddNewCard = () => {
     date: "",
   });
 
+  const [previewImage, setPreviewImage] = useState(null); // State for image preview
   const [loading, setLoading] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -37,6 +38,9 @@ const AddNewCard = () => {
   // Handle file input change for the image
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    if (file) {
+      setPreviewImage(URL.createObjectURL(file)); // Set the image preview URL
+    }
     setFormData({
       ...formData,
       image: file,
@@ -48,11 +52,8 @@ const AddNewCard = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Get the user token from localStorage
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
 
-    // Create form data for image and other fields
     const data = new FormData();
     data.append("title", formData.title);
     data.append("description", formData.description);
@@ -60,28 +61,25 @@ const AddNewCard = () => {
     data.append("date", formData.date);
 
     try {
-      // Send the POST request to the backend API
       const response = await axios.post(
         "http://localhost:3001/api/cards",
         data,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Attach the token for authentication
+            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         }
       );
 
-      // On successful response
       setAlertMessage("Card added successfully!");
       setAlertSeverity("success");
       setOpenSnackbar(true);
 
       setTimeout(() => {
-        navigate("/dashboard"); // Navigate to dashboard after 2 seconds
+        navigate("/dashboard");
       }, 2000);
     } catch (error) {
-      // Handle error response
       setAlertMessage("Failed to add card. Please try again.");
       setAlertSeverity("error");
       setOpenSnackbar(true);
@@ -129,6 +127,16 @@ const AddNewCard = () => {
               accept="image/*"
               required
             />
+            {/* Image preview */}
+            {previewImage && (
+              <div className="image-preview">
+                <img
+                  src={previewImage}
+                  alt="Preview"
+                  style={{ width: "200px", height: "200px", marginTop: "10px" }}
+                />
+              </div>
+            )}
           </div>
 
           <div className="form-group">
@@ -150,7 +158,6 @@ const AddNewCard = () => {
         </form>
       </div>
 
-      {/* Snackbar for success/error messages */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={5000}
