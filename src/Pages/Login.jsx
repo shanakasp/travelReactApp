@@ -91,12 +91,22 @@ const Demo = () => {
             placeholder="Email Address"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            style={{
+              border: "2px solid #FFA8AF",
+              borderRadius: "4px",
+              padding: "8px",
+            }}
           />
           <Password
             placeholder="Password"
             name="userPassword"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            style={{
+              border: "2px solid #FFA8AF",
+              borderRadius: "4px",
+              padding: "8px",
+            }}
           />
           <Logo>
             <LoginLogo />

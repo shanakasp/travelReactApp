@@ -108,14 +108,20 @@ const Signup = () => {
         </h3>
         {/* Username */}
         <div style={{ marginBottom: "10px" }}>
-          <label className="faded-bold-label">Username</label>
+          <label className="faded-bold-label">Email</label>
           <input
             type="text"
             name="username"
             value={formData.username}
             onChange={handleChange}
             required
-            style={{ width: "100%", paddingRight: "8px", borderRadius: "4px" }}
+            style={{
+              width: "100%",
+              paddingRight: "8px",
+              borderRadius: "4px",
+              border: "2px solid #FFA8AF",
+              padding: "4px",
+            }}
           />
         </div>
         {/* Password */}
@@ -127,7 +133,13 @@ const Signup = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            style={{ width: "100%", paddingRight: "8px", borderRadius: "4px" }}
+            style={{
+              width: "100%",
+              paddingRight: "8px",
+              borderRadius: "4px",
+              border: "2px solid #FFA8AF",
+              padding: "4px",
+            }}
           />
         </div>
         {/* Confirm Password */}
@@ -139,7 +151,13 @@ const Signup = () => {
             value={formData.confirmPassword}
             onChange={handleChange}
             required
-            style={{ width: "100%", paddingRight: "8px", borderRadius: "4px" }}
+            style={{
+              width: "100%",
+              paddingRight: "8px",
+              borderRadius: "4px",
+              border: "2px solid #FFA8AF",
+              padding: "4px",
+            }}
           />
         </div>
         {/* Location */}
@@ -151,7 +169,13 @@ const Signup = () => {
             value={formData.location}
             onChange={handleChange}
             required
-            style={{ width: "100%", paddingRight: "8px", borderRadius: "4px" }}
+            style={{
+              width: "100%",
+              paddingRight: "8px",
+              borderRadius: "4px",
+              border: "2px solid #FFA8AF",
+              padding: "4px",
+            }}
           />
         </div>
         {/* Phone Number */}
@@ -163,7 +187,13 @@ const Signup = () => {
             value={formData.phoneNumber}
             onChange={handleChange}
             required
-            style={{ width: "100%", paddingRight: "8px", borderRadius: "4px" }}
+            style={{
+              width: "100%",
+
+              borderRadius: "4px",
+              border: "2px solid #FFA8AF",
+              padding: "4px",
+            }}
           />
         </div>
         {/* Error Message */}
