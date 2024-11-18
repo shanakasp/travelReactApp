@@ -1,8 +1,4 @@
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday"; // Calendar Icon
-import { IconButton, TextField } from "@mui/material"; // Import Material UI TextField for styling
-import AdapterDateFns from "@mui/x-date-pickers/AdapterDateFns"; // Adapter for DateFns
-import { DatePicker } from "@mui/x-date-pickers/DatePicker"; // Import MUI DatePicker
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"; // For date localization
+import { TextField } from "@mui/material"; // Import Material UI TextField for styling
 import React, { useState } from "react";
 import "./Styles/Addnewcard.css";
 import Navbar from "./components/Navbar";
@@ -12,7 +8,7 @@ const AddNewCard = () => {
     title: "",
     description: "",
     image: null,
-    date: new Date(),
+    date: "", // Changed to an empty string for date format
   });
 
   // Handle input changes
@@ -30,14 +26,6 @@ const AddNewCard = () => {
     setFormData({
       ...formData,
       image: file,
-    });
-  };
-
-  // Handle date change using the date picker
-  const handleDateChange = (date) => {
-    setFormData({
-      ...formData,
-      date: date,
     });
   };
 
@@ -91,27 +79,15 @@ const AddNewCard = () => {
 
           <div className="form-group">
             <label htmlFor="date">Date</label>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                value={formData.date}
-                onChange={handleDateChange}
-                renderInput={(props) => (
-                  <TextField
-                    {...props}
-                    InputProps={{
-                      ...props.InputProps,
-                      endAdornment: (
-                        <IconButton>
-                          <CalendarTodayIcon />
-                        </IconButton>
-                      ),
-                    }}
-                    required
-                  />
-                )}
-                dateFormat="yyyy/MM/dd"
-              />
-            </LocalizationProvider>
+            <TextField
+              fullWidth
+              variant="filled"
+              type="date" // Using type="date" for the date input
+              value={formData.date}
+              name="date"
+              onChange={handleChange} // Handle change for the date
+              required
+            />
           </div>
 
           <button type="submit" className="submit-btn">
