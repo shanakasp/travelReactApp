@@ -1,27 +1,27 @@
 import { Alert as MuiAlert, Snackbar } from "@mui/material";
 import AlertTitle from "@mui/material/AlertTitle";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Importing useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 
 const styles = {
-  height: "100vh", // Full height of the viewport
-  display: "flex", // Center the form
+  height: "100vh",
+  display: "flex",
   justifyContent: "center",
   alignItems: "center",
 };
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    username: "",
+    name: "",
+    email: "",
     password: "",
     confirmPassword: "",
     location: "",
-    phoneNumber: "",
   });
   const [error, setError] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState("success"); // Default to success
+  const [alertSeverity, setAlertSeverity] = useState("success");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -42,37 +42,31 @@ const Signup = () => {
     }
 
     try {
+      // Remove confirmPassword before sending to backend
+      const { confirmPassword, ...submitData } = formData;
+
       const response = await fetch("http://localhost:3001/api/users/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name: formData.username,
-          email: formData.username, // You can change this if needed
-          password: formData.password,
-          location: formData.location,
-        }),
+        body: JSON.stringify(submitData),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Successful signup
         setAlertSeverity("success");
         setAlertMessage(data.message);
         setOpenSnackbar(true);
 
-        // Store userId and token in localStorage
         localStorage.setItem("userId", data.userId);
         localStorage.setItem("token", data.token);
 
-        // Redirect to /dashboard after 3 seconds
         setTimeout(() => {
           navigate("/dashboard");
         }, 3000);
       } else {
-        // Error during signup
         setAlertSeverity("error");
         setAlertMessage(data.message || "Something went wrong.");
         setOpenSnackbar(true);
@@ -106,13 +100,12 @@ const Signup = () => {
         >
           Create Your Account
         </h3>
-        {/* Username */}
         <div style={{ marginBottom: "10px" }}>
-          <label className="faded-bold-label">Email</label>
+          <label className="faded-bold-label">Name</label>
           <input
             type="text"
-            name="username"
-            value={formData.username}
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             required
             style={{
@@ -124,7 +117,23 @@ const Signup = () => {
             }}
           />
         </div>
-        {/* Password */}
+        <div style={{ marginBottom: "10px" }}>
+          <label className="faded-bold-label">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            style={{
+              width: "100%",
+              paddingRight: "8px",
+              borderRadius: "4px",
+              border: "2px solid #FFA8AF",
+              padding: "4px",
+            }}
+          />
+        </div>
         <div style={{ marginBottom: "10px" }}>
           <label className="faded-bold-label">Password</label>
           <input
@@ -142,7 +151,6 @@ const Signup = () => {
             }}
           />
         </div>
-        {/* Confirm Password */}
         <div style={{ marginBottom: "10px" }}>
           <label className="faded-bold-label">Confirm Password</label>
           <input
@@ -160,9 +168,8 @@ const Signup = () => {
             }}
           />
         </div>
-        {/* Location */}
         <div style={{ marginBottom: "10px" }}>
-          <label className="faded-bold-label">Location:</label>
+          <label className="faded-bold-label">Location</label>
           <input
             type="text"
             name="location"
@@ -178,37 +185,16 @@ const Signup = () => {
             }}
           />
         </div>
-        {/* Phone Number */}
-        <div style={{ marginBottom: "10px" }}>
-          <label className="faded-bold-label">Phone Number</label>
-          <input
-            type="tel"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            required
-            style={{
-              width: "100%",
-
-              borderRadius: "4px",
-              border: "2px solid #FFA8AF",
-              padding: "4px",
-            }}
-          />
-        </div>
-        {/* Error Message */}
         {error && (
           <p style={{ color: "red", fontSize: "14px", marginBottom: "10px" }}>
             {error}
           </p>
         )}
-        {/* Submit Button */}
         <button type="submit" className="signup-button">
           Sign Up
         </button>
       </form>
 
-      {/* Snackbar for Success/Error Alerts */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={5000}
