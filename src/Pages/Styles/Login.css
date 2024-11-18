@@ -1,0 +1,180 @@
+/* Full page setup */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #cef9f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-size: 16px; /* Base font size for scaling */
+}
+
+/* Main container for the left and right sections */
+.login-container {
+  display: flex;
+  height: 90%; /* Use percentage for better scaling */
+  width: 100%; /* Ensure layout adapts */
+  max-width: 60rem; /* Max width for larger screens */
+  border-radius: 0.625rem;
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+/* Left side with image */
+.left-container {
+  flex: 1;
+  background-color: #f0f0f0;
+  position: relative;
+}
+
+/* Image on the left side */
+.left-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit; /* Inherit parent radius */
+}
+
+/* Text on image */
+.left-container::after {
+  content: "Keep your Memories";
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0.125rem 0.125rem 0.313rem rgba(0, 0, 0, 0.7);
+}
+
+/* Right side with form */
+.right-container {
+  flex: 0 0 40%;
+  background-color: #e0e0e0;
+  position: relative;
+  padding: 2rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.625rem;
+}
+
+/* Form container */
+.login-form-container {
+  width: 100%;
+  max-width: 20rem;
+  text-align: center;
+  position: relative;
+  z-index: 2; /* Ensures the form stays above the SVGs */
+}
+
+/* Title */
+.login-title {
+  margin-bottom: 1.25rem;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Input field wrapper */
+.input-field {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+/* Input box styling */
+.input-box {
+  padding: 0.625rem;
+  width: 100%;
+  border-radius: 0.313rem;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.input-box:focus {
+  outline: none;
+  border-color: #66f1a0;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 123, 255, 0.3);
+}
+
+/* Button to toggle password visibility */
+.toggle-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Submit button styling */
+.submit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #66f1a0;
+  color: #fff;
+  border: none;
+  border-radius: 0.313rem;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 0.125rem 0.375rem rgba(0, 123, 255, 0.2);
+}
+
+.submit-btn:hover {
+  background-color: #44b78f;
+}
+
+/* SVG shapes in the background */
+.right-container::before,
+.right-container::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200%;
+  height: 8rem;
+  background: url("https://www.svgrepo.com/show/251627/wave.svg") no-repeat
+    center;
+  background-size: cover;
+  z-index: 1;
+}
+
+.right-container::before {
+  top: -3.125rem;
+}
+
+.right-container::after {
+  bottom: -3.125rem;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+
+  .left-container,
+  .right-container {
+    width: 100%;
+    height: 50%;
+  }
+
+  .login-form-container {
+    padding: 1.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-form-container {
+    padding: 1.25rem;
+  }
+
+  .submit-btn {
+    font-size: 0.875rem;
+  }
+}
