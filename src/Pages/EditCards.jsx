@@ -166,20 +166,26 @@ const EditCard = () => {
                 onChange={handleImageChange}
                 accept="image/*"
               />
-              {/* If the image is already uploaded, you may want to display the current image URL */}
-              {formData.image && formData.image instanceof File && (
-                <img src={URL.createObjectURL(formData.image)} alt="Current" />
-              )}
-              {/* Display the existing image URL if available */}
-              {!formData.image && formData.image !== null && (
-                <img
-                  src={`http://localhost:3001/${formData.image}`}
-                  alt="Current"
-                  style={{ width: "100px", height: "auto" }}
-                />
-              )}
-            </div>
 
+              {/* Image Preview Box */}
+              <div className="image-preview">
+                {/* Show new image preview if selected */}
+                {formData.image instanceof File && (
+                  <img
+                    src={URL.createObjectURL(formData.image)}
+                    alt="Preview"
+                  />
+                )}
+
+                {/* Show existing image preview if no new image is selected */}
+                {formData.image && formData.image !== null && (
+                  <img
+                    src={`http://localhost:3001/${formData.image}`}
+                    alt="Existing"
+                  />
+                )}
+              </div>
+            </div>
             <div className="form-group">
               <label htmlFor="date">Date</label>
               <TextField
