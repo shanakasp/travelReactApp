@@ -11,7 +11,8 @@
 
 .add-new-card h2 {
   text-align: center;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  font-size: medium;
 }
 
 .form-group {
@@ -20,6 +21,7 @@
 
 .form-group label {
   display: block;
+  font-size: small;
   margin-bottom: 5px;
   font-weight: bold;
 }
@@ -43,7 +45,7 @@
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #4caf50;
+  background-color: #f45a68;
   color: white;
   border: none;
   font-size: 16px;
@@ -52,5 +54,5 @@
 }
 
 .submit-btn:hover {
-  background-color: #45a049;
+  background-color: #fb7e89;
 }
